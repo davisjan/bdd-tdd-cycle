@@ -50,7 +50,7 @@ class MoviesController < ApplicationController
   private
 
   def movies_by_rating_and_order
-    @movies = Movie.find_all_by_rating(session[:ratings].keys,
+    @movies = Movie.find_all_by_rating(@selected_ratings.keys,
                                        order: session[:sort])
   end
 
@@ -69,11 +69,12 @@ class MoviesController < ApplicationController
   end
 
   def ratings_changed
-    session[:ratings].nil? || (params[:ratings] != session[:ratings])
+    (params[:ratings] != session[:ratings])
   end
 
   def set_session_ratings
-    session[:ratings] = params[:ratings] || session[:ratings] || default_ratings
+    session[:ratings] = params[:ratings] || session[:ratings] 
+    @selected_ratings = session[:ratings] || default_ratings
   end
 
   def default_ratings
